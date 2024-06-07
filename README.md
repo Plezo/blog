@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+Copy the .env.example file, name it .env.local, and fill it out
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Version Control
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Main branch is prod branch so we will only merge features there for releases
+Dev branch is going to have all the features that will be merged into main soon
+Feature branches are for implementing individual features to be merged into dev
+Hotfix branches are for quick fixes that are needed for bugs in main
 
-## Learn More
+## Database Migrations
 
-To learn more about Next.js, take a look at the following resources:
+The package for migrations should be in the package.json but in case it isn't:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+npm install db-migrate db-migrate-pg pg
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Make sure to fill out the database.json file, follow the structure from the database.json.example file, the credentials should be the same as the .env.local
 
-## Deploy on Vercel
+To make a new migration file, run the command:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+npx db-migrate create <name-of-migration> --sql-file
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Once generated, implement the up and down migration files
+
+To apply migrations, run:
+
+```sh
+npx db-migrate up
+```
+
+To rollback a migration, run:
+
+```sh
+npx db-migrate down
+```

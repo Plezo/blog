@@ -1,0 +1,14 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "",
+    "database": "",
+    "user": "",
+    "password": "",
+    "schema": "public"
+    "port": ,
+    "ssl": {
+      rejectUnauthorized": false
+    }
+  }
+}
