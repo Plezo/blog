@@ -12,10 +12,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Version Control
 
-Main branch is prod branch so we will only merge features there for releases
-Dev branch is going to have all the features that will be merged into main soon
-Feature branches are for implementing individual features to be merged into dev
-Hotfix branches are for quick fixes that are needed for bugs in main
+- Main branch is prod branch so we will only merge features there for releases
+- Dev branch is going to have all the features that will be merged into main soon
+- Feature branches are for implementing individual features to be merged into dev
+- Hotfix branches are for quick fixes that are needed for bugs in main
 
 ## Database Migrations
 
