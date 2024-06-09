@@ -1,26 +1,6 @@
 import { Pool } from "pg";
 import { ColumnType, Generated, Kysely, PostgresDialect } from "kysely";
-
-interface UsersTable {
-  id: Generated<string>;
-  email: string;
-  userName: string;
-  userImage: string;
-  createdAt: ColumnType<Date, string | undefined, never>;
-}
-
-interface BlogsTable {
-  id: Generated<string>;
-  userID: string;
-  uri: string;
-  createdAt: ColumnType<Date, string | undefined, never>;
-  lastEditted: ColumnType<Date, string | undefined, never>;
-}
-
-export interface Database {
-  users: UsersTable;
-  blogs: BlogsTable;
-}
+import { Database } from "@/lib/types";
 
 const dialect = new PostgresDialect({
   pool: new Pool({

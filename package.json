@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/react-syntax-highlighter": "^15.5.13",
+    "aws-sdk": "^2.1637.0",
     "db-migrate": "^0.11.14",
     "db-migrate-pg": "^1.5.2",
     "kysely": "^0.27.3",

@@ -23,9 +23,30 @@ export default function Home() {
     characters: source.length,
   };
 
+  const handlePublish = async () => {
+    try {
+      const res = await fetch("/api/publish", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content: source }),
+      });
+
+      if (!res.ok) {
+        console.error("Failed to send POST request", res);
+      }
+    } catch (error) {
+      if (error) return console.error(error);
+    }
+  };
+
   return (
     <>
       <Header feedElement={feedElement} />
+      <button className="text-yellow-300" onClick={handlePublish}>
+        Publish
+      </button>
 
       <main className="flex justify-between">
         <section className="w-full pt-5">
