@@ -7,7 +7,7 @@ export async function createBlogsTable() {
     .addColumn("id", "uuid", (cb) =>
       cb.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
-    .addColumn("userID", "uuid", (cb) => cb.notNull())
+    .addColumn("userid", "uuid", (cb) => cb.notNull())
     .addColumn("uri", "text", (cb) => cb.notNull())
     .addColumn("createdAt", "timestamptz", (cb) =>
       cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`)

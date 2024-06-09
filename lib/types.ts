@@ -25,7 +25,7 @@ export type UserUpdate = Updateable<UsersTable>;
 
 export interface BlogsTable {
   id: Generated<string>;
-  userID: string;
+  userid: string;
   uri: string;
   createdAt: ColumnType<Date, string | undefined, never>;
   lastEdited: ColumnType<Date, string | undefined, never>;

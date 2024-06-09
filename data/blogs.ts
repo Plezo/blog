@@ -8,12 +8,14 @@ export async function getAllBlogs() {
 }
 
 export async function saveBlog(blog: NewBlog) {
-  const test =
-    await sql`SELECT * FROM information_schema.columns WHERE table_name='blogs'`.execute(
-      db
-    );
+  const res = await db
+    .insertInto("blogs")
+    .values({
+      id: blog.id,
+      userid: blog.userid,
+      uri: blog.uri,
+    })
+    .execute();
 
-  console.log(test);
-
-  return await db.insertInto("blogs").values(blog).execute();
+  return res;
 }
