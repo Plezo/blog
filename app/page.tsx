@@ -3,6 +3,7 @@
 import { CodeBlock, Pre } from "@/components/Code";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import axios from "axios";
 import { useState } from "react";
 import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
@@ -25,15 +26,19 @@ export default function Home() {
 
   const handlePublish = async () => {
     try {
-      const res = await fetch("/api/publish", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await axios.post(
+        "/api/publish",
+        {
+          content: source,
         },
-        body: JSON.stringify({ content: source }),
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if (!res.ok) {
+      if (res.status !== 200) {
         console.error("Failed to send POST request", res);
       }
     } catch (error) {

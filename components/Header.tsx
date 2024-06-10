@@ -1,8 +1,14 @@
+import { useUser } from "@/hooks/useUser";
+import axios from "axios";
+import Image from "next/image";
+
 export default function Header({
   feedElement,
 }: {
   feedElement: (syntax: string) => void;
 }) {
+  const user = useUser();
+
   const btns = [
     { name: "B", syntax: "**Bold**" },
     { name: "I", syntax: "*Italic*" },
@@ -24,6 +30,15 @@ export default function Header({
     },
   ];
 
+  const handleSignOut = async () => {
+    try {
+      await axios.get("/api/auth/logout");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Failed to sign out", error);
+    }
+  };
+
   return (
     <header className="flex items-center justify-between h-14 sticky top-0 z-10 bg-[#253237]">
       <h1 className="text-3xl font-bold text-yellow-500">Blog Editor</h1>
@@ -38,6 +53,24 @@ export default function Header({
           </button>
         ))}
       </section>
+      {user && (
+        <div className="flex gap-4 pt-4">
+          <span className="m-auto">{user.name}</span>
+          <Image
+            className="rounded-full"
+            src={user.picture}
+            width={50}
+            height={50}
+            alt="User Profile"
+          />
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+      )}
+      {!user && (
+        <div>
+          <span>Loading...</span>
+        </div>
+      )}
     </header>
   );
 }
