@@ -1,36 +1,21 @@
-import {
-  ColumnType,
-  Generated,
-  Insertable,
-  Selectable,
-  Updateable,
-} from "kysely";
-
-export interface Database {
-  users: UsersTable;
-  blogs: BlogsTable;
-}
-
-interface UsersTable {
-  id: Generated<string>;
+export interface User {
+  id: string;
   email: string;
   userName: string;
   userImage: string;
-  createdAt: ColumnType<Date, string | undefined, never>;
+  createdAt: string; // consider string | Date
 }
 
-export type User = Selectable<UsersTable>;
-export type NewUser = Insertable<UsersTable>;
-export type UserUpdate = Updateable<UsersTable>;
+export type NewUser = Omit<User, "id" | "createdAt">;
+export type UpdateUser = Partial<User>;
 
-export interface BlogsTable {
-  id: Generated<string>;
-  userid: string;
+export interface Blog {
+  id: string;
+  userID: string;
   uri: string;
-  createdAt: ColumnType<Date, string | undefined, never>;
-  lastEdited: ColumnType<Date, string | undefined, never>;
+  createdAt: string; // consider string | Date
+  lastEdited: string; // consider string | Date
 }
 
-export type Blog = Selectable<BlogsTable>;
-export type NewBlog = Insertable<BlogsTable>;
-export type BlogUpdate = Updateable<BlogsTable>;
+export type NewBlog = Omit<Blog, "createdAt" | "lastEdited">;
+export type UpdateBlog = Partial<Blog>;

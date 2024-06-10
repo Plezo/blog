@@ -7,7 +7,7 @@ const storeMetadata = async (blogID: string, fileURL: string) => {
   try {
     const blog: NewBlog = {
       id: blogID,
-      userid: "36b48138-18f1-4c80-9020-e2810325d9b1", // temp user id
+      userID: "36b48138-18f1-4c80-9020-e2810325d9b1", // temp user id
       uri: fileURL,
     };
 

@@ -30,6 +30,9 @@ export async function GET(req: NextRequest) {
 
     const user = res.data;
 
+    // Check if exists in database
+    // If not, create user
+
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
     const token = await new SignJWT(user)
       .setProtectedHeader({ alg: "HS256" })
