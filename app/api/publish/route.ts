@@ -1,24 +1,7 @@
 import { saveBlog } from "@/data/blogs";
-import { s3 } from "@/lib/aws";
+import { uploadMarkdownToS3 } from "@/lib/aws/s3";
 import { NewBlog } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
-
-const uploadMarkdownToS3 = async (content: string, fileName: string) => {
-  const params = {
-    Bucket: process.env.S3_BUCKET_NAME,
-    Key: fileName,
-    Body: content,
-    ContentType: "text/markdown",
-  };
-
-  try {
-    const data = await s3.upload(params).promise();
-    return data.Location;
-  } catch (error) {
-    console.error("Error uploading file:", error);
-    throw error;
-  }
-};
 
 const storeMetadata = async (blogID: string, fileURL: string) => {
   try {
@@ -49,8 +32,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const fileName = `blogs/${blogID}.md`;
 
   try {
-    const fileUrl = await uploadMarkdownToS3(data.content, fileName);
-    await storeMetadata(blogID, fileUrl);
+    const fileURI = await uploadMarkdownToS3(data.content, fileName);
+    await storeMetadata(blogID, fileURI);
 
     return NextResponse.json({ status: 200 });
   } catch (error) {
