@@ -3,6 +3,7 @@
 import { CodeBlock, Pre } from "@/components/Code";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { useUser } from "@/hooks/useUser";
 import axios from "axios";
 import { useState } from "react";
 import Markdown from "react-markdown";
@@ -13,6 +14,7 @@ import remarkGfm from "remark-gfm";
 export default function Home() {
   const options = { code: CodeBlock, pre: Pre };
   const [source, setSource] = useState("");
+  const user = useUser();
 
   const feedElement = (syntax: string) => {
     return setSource(source + syntax);
@@ -30,6 +32,7 @@ export default function Home() {
         "/api/publish",
         {
           content: source,
+          userid: user?.id,
         },
         {
           headers: {

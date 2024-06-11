@@ -55,10 +55,10 @@ export default function Header({
       </section>
       {user && (
         <div className="flex gap-4 pt-4">
-          <span className="m-auto">{user.name}</span>
+          <span className="m-auto">{user?.username}</span>
           <Image
             className="rounded-full"
-            src={user.picture}
+            src={user?.img}
             width={50}
             height={50}
             alt="User Profile"

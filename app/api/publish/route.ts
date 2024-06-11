@@ -3,12 +3,16 @@ import { uploadMarkdownToS3 } from "@/lib/aws/s3";
 import { NewBlog } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
 
-const storeMetadata = async (blogID: string, fileURL: string) => {
+const storeMetadata = async (
+  blogid: string,
+  userid: string,
+  fileuri: string
+) => {
   try {
     const blog: NewBlog = {
-      id: blogID,
-      userID: "36b48138-18f1-4c80-9020-e2810325d9b1", // temp user id
-      uri: fileURL,
+      id: blogid,
+      userid: userid,
+      uri: fileuri,
     };
 
     await saveBlog(blog);
@@ -28,12 +32,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
   }
 
-  const blogID = crypto.randomUUID();
-  const fileName = `blogs/${blogID}.md`;
+  const blogid = crypto.randomUUID();
+  const userid = data.userid;
+  const filename = `blogs/${blogid}.md`;
 
   try {
-    const fileURI = await uploadMarkdownToS3(data.content, fileName);
-    await storeMetadata(blogID, fileURI);
+    const fileuri = await uploadMarkdownToS3(data.content, filename);
+    await storeMetadata(blogid, userid, fileuri);
 
     return NextResponse.json({ status: 200 });
   } catch (error) {

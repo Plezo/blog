@@ -3,6 +3,8 @@ import { google } from "googleapis";
 import axios from "axios";
 import { serialize } from "cookie";
 import { SignJWT } from "jose";
+import { createUser, getUserByEmail } from "@/data/users";
+import { objectToJWTPayload } from "@/lib/utils";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -28,13 +30,23 @@ export async function GET(req: NextRequest) {
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokens.access_token}`
     );
 
-    const user = res.data;
+    const googleUser = res.data;
 
-    // Check if exists in database
-    // If not, create user
+    let user = await getUserByEmail(googleUser.email);
+
+    if (!user) {
+      user = await createUser({
+        id: crypto.randomUUID(),
+        email: googleUser.email,
+        username: googleUser.given_name,
+        img: googleUser.picture,
+      });
+    }
+
+    console.log(user);
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
-    const token = await new SignJWT(user)
+    const token = await new SignJWT(objectToJWTPayload(user))
       .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("1h")
       .sign(secret);

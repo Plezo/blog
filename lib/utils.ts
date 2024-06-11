@@ -1,4 +1,4 @@
-import { decodeJwt, jwtVerify } from "jose";
+import { JWTPayload, decodeJwt, jwtVerify } from "jose";
 
 export async function verifyJWT(token: string, secret: string): Promise<any> {
   const encoder = new TextEncoder();
@@ -20,4 +20,16 @@ export function getUserFromJWT(token: string): any {
     console.error("Invalid token", error);
     return null;
   }
+}
+
+export function objectToJWTPayload<T extends object>(obj: T): JWTPayload {
+  const payload: JWTPayload = {};
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      payload[key] = obj[key]?.toString();
+    }
+  }
+
+  return payload;
 }

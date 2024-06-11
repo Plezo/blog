@@ -3,12 +3,12 @@ import { NewBlog, UpdateBlog } from "@/lib/types";
 
 export async function saveBlog(blog: NewBlog) {
   const q = `
-  INSERT INTO blogs (id, userID, uri) 
-  VALUES ($1, $2, $3) VALUES
+  INSERT INTO blogs (id, userid, uri) 
+  VALUES ($1, $2, $3)
   RETURNING *
   `;
 
-  const values = [blog.id, blog.userID, blog.uri];
+  const values = [blog.id, blog.userid, blog.uri];
   const res = await query(q, values);
   return res.rows[0];
 }

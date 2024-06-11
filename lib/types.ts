@@ -1,21 +1,21 @@
 export interface User {
   id: string;
   email: string;
-  userName: string;
-  userImage: string;
-  createdAt: string; // consider string | Date
+  username: string;
+  img: string;
+  createdat: string; // consider string | Date
 }
 
-export type NewUser = Omit<User, "createdAt">;
+export type NewUser = Omit<User, "createdat">;
 export type UpdateUser = Partial<User>;
 
 export interface Blog {
   id: string;
-  userID: string;
+  userid: string;
   uri: string;
-  createdAt: string; // consider string | Date
-  lastEdited: string; // consider string | Date
+  createdat: string; // consider string | Date
+  lastedited: string; // consider string | Date
 }
 
-export type NewBlog = Omit<Blog, "createdAt" | "lastEdited">;
+export type NewBlog = Omit<Blog, "createdat" | "lastedited">;
 export type UpdateBlog = Partial<Blog>;
