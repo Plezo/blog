@@ -4,7 +4,7 @@ import { NewBlog, UpdateBlog } from "@/lib/types";
 export async function saveBlog(blog: NewBlog) {
   const q = `
   INSERT INTO blogs (id, userID, uri) 
-  VALUES ($1, $2, $3)
+  VALUES ($1, $2, $3) VALUES
   RETURNING *
   `;
 
