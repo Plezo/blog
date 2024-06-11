@@ -6,7 +6,7 @@ export interface User {
   createdAt: string; // consider string | Date
 }
 
-export type NewUser = Omit<User, "id" | "createdAt">;
+export type NewUser = Omit<User, "createdAt">;
 export type UpdateUser = Partial<User>;
 
 export interface Blog {
