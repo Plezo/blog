@@ -1,5 +1,6 @@
-import { saveBlog } from "@/data/blogs";
-import { uploadMarkdownToS3 } from "@/lib/aws/s3";
+import { metadata } from "@/app/layout";
+import { getBlogByID, saveBlog } from "@/data/blogs";
+import { fetchObject, uploadMarkdownToS3 } from "@/lib/aws/s3";
 import { NewBlog } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -20,6 +21,22 @@ const storeMetadata = async (newblog: NewBlog) => {
     throw error;
   }
 };
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  const { searchParams } = new URL(req.url);
+  const blogid = searchParams.get("blogid");
+  //check if blog id is null/exist
+
+  const blog = getBlogByID(blogid!);
+
+  // .md is temp, fetchobject needs to work with diff file ext
+  const blogcontent = fetchObject(blogid! + ".md");
+
+  return NextResponse.json({
+    metadata: blog,
+    content: blogcontent,
+  });
+}
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const data = await req.json();
