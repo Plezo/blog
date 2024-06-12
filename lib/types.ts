@@ -13,6 +13,9 @@ export interface Blog {
   id: string;
   userid: string;
   uri: string;
+  title: string;
+  overview: string;
+  img?: string;
   createdat: string; // consider string | Date
   lastedited: string; // consider string | Date
 }

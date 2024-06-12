@@ -1,0 +1,4 @@
+ALTER TABLE blogs
+DROP COLUMN title
+DROP COLUMN overview
+DROP COLUMN img;
