@@ -1,5 +1,5 @@
-import { saveBlog } from "@/data/blogs";
-import { uploadMarkdownToS3 } from "@/lib/aws/s3";
+import { getBlogByID, saveBlog } from "@/data/blogs";
+import { fetchObject, uploadMarkdownToS3 } from "@/lib/aws/s3";
 import { NewBlog } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -20,6 +20,28 @@ const storeMetadata = async (newblog: NewBlog) => {
     throw error;
   }
 };
+
+export async function GET(req: NextRequest, res: NextResponse) {
+  const { searchParams } = new URL(req.url);
+  const blogid = searchParams.get("blogid");
+
+  if (!blogid) {
+    return NextResponse.json(
+      {
+        message: "Must provide blogid!",
+      },
+      { status: 400 }
+    );
+  }
+
+  const blog = await getBlogByID(blogid!);
+  const blogcontent = await fetchObject(`blogs/${blogid!}.md`);
+
+  return NextResponse.json({
+    metadata: blog,
+    content: blogcontent.Body,
+  });
+}
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const data = await req.json();
