@@ -1,4 +1,5 @@
 "use client";
+
 import { CodeBlock, Pre } from "@/components/Code";
 import { Blog } from "@/lib/types";
 import axios from "axios";
@@ -31,7 +32,11 @@ export default function BlogPage({ params }: { params: { blogid: string } }) {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col">
+      <div className="flex flex-col m-auto pt-4 gap-4 text-center">
+        <h1 className="text-4xl">{metadata?.title}</h1>
+        <p>{metadata?.overview}</p>
+      </div>
       <Markdown
         className="prose prose-invert min-w-full prose-p:text-xl"
         components={options}
