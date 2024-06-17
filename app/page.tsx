@@ -1,11 +1,11 @@
 "use client";
 
 import { CodeBlock, Pre } from "@/components/Code";
+import { useUser } from "@/hooks/useUser";
+import { useState } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { useUser } from "@/hooks/useUser";
 import axios from "axios";
-import { useState } from "react";
 import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeSanitize from "rehype-sanitize";
@@ -15,6 +15,7 @@ type FormError = {
   title?: string;
   overview?: string;
   content?: string;
+  file?: string;
 };
 
 export default function Home() {
@@ -22,7 +23,7 @@ export default function Home() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [overview, setOverview] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState<File | null>(null);
   const [errors, setErrors] = useState<FormError>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const user = useUser();
@@ -56,8 +57,22 @@ export default function Home() {
       errors.content = "Blog can't be empty!";
     }
 
+    if (img) {
+      // 5mb limit
+      if (img.size > 5e6) errors.file = "File size is too large!";
+      else if (img.type.split("/")[0] !== "image")
+        errors.file = "File must be an image!";
+    }
+
     setErrors(errors);
     setIsFormValid(Object.keys(errors).length === 0);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      setImg(file);
+    }
   };
 
   const handlePublish = async () => {
@@ -67,22 +82,15 @@ export default function Home() {
       return console.error("Form is invalid");
     }
 
+    let formData = new FormData();
+    formData.append("title", title);
+    formData.append("overview", overview);
+    formData.append("content", content);
+    formData.append("userid", user?.id!);
+    if (img) formData.append("imginput", img);
+
     try {
-      const res = await axios.post(
-        "/api/publish",
-        {
-          content: content,
-          userid: user?.id,
-          title: title,
-          overview: overview,
-          img: img === "" ? null : img,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await axios.post("/api/publish", formData);
 
       if (res.status !== 200) {
         console.error("Failed to send POST request", res);
@@ -106,6 +114,8 @@ export default function Home() {
             onChange={(e) => setOverview(e.target.value)}
           />
           {errors.overview && <p className="text-red-700">{errors.overview}</p>}
+          <input type="file" accept="image/*" onChange={handleFileUpload} />
+          {errors.file && <p className="text-red-700">{errors.file}</p>}
         </div>
         <button
           className="text-yellow-300 text-4xl bg-black p-4 rounded-full hover:bg-gray-900 active:bg-gray-800"

@@ -1,48 +1,49 @@
 import { saveBlog } from "@/data/blogs";
-import { uploadMarkdownToS3 } from "@/lib/aws/s3";
-import { NewBlog } from "@/lib/types";
+import { uploadToS3 } from "@/lib/aws/s3";
 import { NextRequest, NextResponse } from "next/server";
 
-const storeMetadata = async (newblog: NewBlog) => {
-  try {
-    const blog: NewBlog = {
-      id: newblog.id,
-      userid: newblog.userid,
-      uri: newblog.uri,
-      title: newblog.title,
-      overview: newblog.overview,
-      img: newblog.img,
-    };
-
-    await saveBlog(blog);
-  } catch (error) {
-    console.error("Error inserting metadata:", error);
-    throw error;
-  }
-};
-
 export async function POST(req: NextRequest, res: NextResponse) {
-  const data = await req.json();
+  const data = await req.formData();
 
-  if (!data.content) {
+  if (!data.get("content")) {
     return NextResponse.json({
-      message: "Blog ID and content are required",
+      message: "Blog Content is required",
       status: 400,
     });
   }
 
-  const blogid = crypto.randomUUID();
-  const filename = `blogs/${blogid}.md`;
-
   try {
-    const fileuri = await uploadMarkdownToS3(data.content, filename);
-    await storeMetadata({
+    const blogid = crypto.randomUUID();
+    const blogfilename = `blogs/${blogid}.md`;
+
+    const blogfile = new File([data.get("content")!], blogfilename, {
+      type: "text/markdown",
+    });
+
+    const fileuri = await uploadToS3(blogfile);
+
+    let imguri = undefined;
+    if (data.get("imginput")) {
+      const imginput: File = data.get("imginput") as File;
+
+      const imgid = crypto.randomUUID();
+      const imgfilename = `imgs/${imgid}.${imginput.name.split(".")[1]}`;
+
+      // rename file to uuid
+      const imgfile = new File([imginput], imgfilename, {
+        type: imginput.type,
+      });
+
+      imguri = await uploadToS3(imgfile);
+    }
+
+    await saveBlog({
       id: blogid,
-      userid: data.userid,
+      userid: data.get("userid") as string,
       uri: fileuri,
-      title: data.title,
-      overview: data.overview,
-      img: data.img,
+      title: data.get("title") as string,
+      overview: data.get("overview") as string,
+      img: imguri,
     });
 
     return NextResponse.json({ status: 200 });

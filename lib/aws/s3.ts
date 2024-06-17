@@ -13,21 +13,20 @@ const s3Client = new S3Client({
   },
 });
 
-export const uploadMarkdownToS3 = async (
-  fileContent: string,
-  fileName: string
-) => {
+export const uploadToS3 = async (file: File) => {
+  const filecontent = Buffer.from(await file.arrayBuffer());
+  const contentType = file.type || "application/octet-stream";
+
   const uploadParams = {
-    Bucket: process.env.S3_BUCKET_NAME,
-    Key: fileName,
-    Body: fileContent,
-    ContentType: "text/markdown",
+    Bucket: process.env.S3_BUCKET_NAME!,
+    Key: file.name,
+    Body: filecontent,
+    ContentType: contentType,
   };
 
   try {
     const data = await s3Client.send(new PutObjectCommand(uploadParams));
-    // return data.Location;
-    return `s3://${process.env.S3_BUCKET_NAME}/${fileName}`;
+    return `s3://${process.env.S3_BUCKET_NAME}/${file.name}`;
   } catch (error) {
     console.error("Error uploading file:", error);
     throw error;
