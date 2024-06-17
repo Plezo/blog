@@ -15,6 +15,7 @@ type FormError = {
   title?: string;
   overview?: string;
   content?: string;
+  file?: string;
 };
 
 export default function Home() {
@@ -54,6 +55,13 @@ export default function Home() {
 
     if (!content) {
       errors.content = "Blog can't be empty!";
+    }
+
+    if (img) {
+      // 5mb limit
+      if (img.size > 5e6) errors.file = "File size is too large!";
+      else if (img.type.split("/")[0] !== "image")
+        errors.file = "File must be an image!";
     }
 
     setErrors(errors);
@@ -107,6 +115,7 @@ export default function Home() {
           />
           {errors.overview && <p className="text-red-700">{errors.overview}</p>}
           <input type="file" accept="image/*" onChange={handleFileUpload} />
+          {errors.file && <p className="text-red-700">{errors.file}</p>}
         </div>
         <button
           className="text-yellow-300 text-4xl bg-black p-4 rounded-full hover:bg-gray-900 active:bg-gray-800"

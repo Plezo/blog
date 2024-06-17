@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { google } from "googleapis";
-import axios from "axios";
 import { serialize } from "cookie";
 import { SignJWT } from "jose";
 import { createUser, getUserByEmail } from "@/data/users";
 import { objectToJWTPayload } from "@/lib/utils";
+import axios from "axios";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
