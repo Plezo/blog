@@ -1,6 +1,7 @@
-import { getBlogByID, saveBlog } from "@/data/blogs";
+import { getAllBlogs, getBlogByID, saveBlog } from "@/data/blogs";
 import { fetchObject, uploadToS3 } from "@/lib/aws/s3";
 import { NewBlog } from "@/lib/types";
+import { get } from "http";
 import { NextRequest, NextResponse } from "next/server";
 
 const storeMetadata = async (newblog: NewBlog) => {
@@ -25,22 +26,18 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { searchParams } = new URL(req.url);
   const blogid = searchParams.get("blogid");
 
-  if (!blogid) {
-    return NextResponse.json(
-      {
-        message: "Must provide blogid!",
-      },
-      { status: 400 }
-    );
+  if (blogid) {
+    const blog = await getBlogByID(blogid!);
+    const blogcontent = await fetchObject(`blogs/${blogid!}.md`);
+
+    return NextResponse.json({
+      metadata: blog,
+      content: blogcontent.Body,
+    });
+  } else {
+    const blogs = await getAllBlogs();
+    return NextResponse.json(blogs);
   }
-
-  const blog = await getBlogByID(blogid!);
-  const blogcontent = await fetchObject(`blogs/${blogid!}.md`);
-
-  return NextResponse.json({
-    metadata: blog,
-    content: blogcontent.Body,
-  });
 }
 
 export async function POST(req: NextRequest, res: NextResponse) {
