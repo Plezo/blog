@@ -29,6 +29,16 @@ export const getAllBlogs = async () => {
   return res.rows;
 };
 
+export const getBlogsByUser = async (userid: string) => {
+  const q = `
+  SELECT * FROM blogs WHERE userid = $1
+  `;
+
+  const values = [userid];
+  const res = await query(q, values);
+  return res.rows;
+};
+
 export const getBlogByID = async (id: string) => {
   const q = `
   SELECT * FROM blogs WHERE id = $1
