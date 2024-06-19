@@ -12,7 +12,7 @@ export default function Home() {
       <div className="flex  flex-col items-center my-2">
         <div className="flex items-start w-full">
           <h1 className="text-xl font-bold pt-10 text-blog-grey">
-            Join BlogWiz.
+            Welcome back.
           </h1>
         </div>
         <div className="flex flex-col pb-10 pt-4 gap-4">
@@ -38,7 +38,7 @@ export default function Home() {
           ease-in-out duration-300"
           >
             <MdOutlineEmail className="h-5 w-5" />
-            Sign up with email
+            Log in with email
           </button>
           <button
             className="flex flex-row gap-4  bg-blog-teal text-blog-grey px-4 py-4 h-12 w-30  
@@ -47,12 +47,12 @@ export default function Home() {
             onClick={handleLogin}
           >
             <FaGoogle className="h-5 w-5" />
-            Sign in with Google
+            Log in with Google
           </button>
           <div className="flex gap-1">
-            <p className="text-blog-grey ">Already have an account? </p>
+            <p className="text-blog-grey ">No account? </p>
             <a href="/login" className="text-blog-teal hover:underline">
-              Sign in
+              Create one
             </a>
           </div>
         </div>
