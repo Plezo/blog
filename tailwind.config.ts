@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        "128": "32rem",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
