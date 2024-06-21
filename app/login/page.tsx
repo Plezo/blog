@@ -1,6 +1,17 @@
 "use client";
+import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function Home() {
   const handleLogin = () => {
@@ -8,55 +19,74 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center bg-blog-light-black w-96 h-auto rounded-2xl">
-      <div className="flex  flex-col items-center my-2">
-        <div className="flex items-start w-full">
-          <h1 className="text-xl font-bold pt-10 text-blog-grey">
+    <div className="flex justify-center items-center">
+      <Card className="mx-auto max-w-sm bg-primary">
+        <CardHeader>
+          <CardTitle className="text-2xl text-foreground">
             Welcome back.
-          </h1>
-        </div>
-        <div className="flex flex-col pb-10 pt-4 gap-4">
-          <div className="flex flex-col  gap-2">
-            <label className="text-blog-grey font-semibold">Email</label>
-            <input
-              type="text"
-              placeholder="Email"
-              className="bg-blog-light-black text-blog-grey px-4 py-2 h-12 w-30 rounded-lg
-               border-blog-grey border"
-            />
-            <label className="text-blog-grey font-semibold">Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              className="bg-blog-light-black text-blog-grey px-4 py-2 h-12 w-30 rounded-lg
-               border-blog-grey border"
-            />
+          </CardTitle>
+          <CardDescription>
+            Enter your email below to login to your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label className="text-foreground " htmlFor="email">
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                className="bg-primary"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label className="text-foreground" htmlFor="password">
+                  Password
+                </Label>
+                <a
+                  href="/"
+                  className="ml-auto inline-block text-sm text-foreground hover:underline"
+                >
+                  Forgot your password?
+                </a>
+              </div>
+              <Input
+                className="bg-primary"
+                id="password"
+                type="password"
+                required
+              />
+            </div>
+            <Button
+              variant="outline"
+              type="submit"
+              className="w-full text-foreground border-background bg-accent hover:bg-accent/80"
+            >
+              <MdOutlineEmail className="h-5 w-5 mr-2" />
+              Login
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full text-foreground bg-accent border-background hover:bg-accent/80"
+              onClick={handleLogin}
+            >
+              <FaGoogle className="h-5 w-5 mr-2" />
+              Login with Google
+            </Button>
           </div>
-          <button
-            className="flex flex-row gap-4 bg-blog-teal text-blog-grey px-4 py-4 h-12  w-30
-          rounded-3xl  hover:bg-blog-dark-teal transition-all 
-          ease-in-out duration-300"
-          >
-            <MdOutlineEmail className="h-5 w-5" />
-            Log in with email
-          </button>
-          <button
-            className="flex flex-row gap-4  bg-blog-teal text-blog-grey px-4 py-4 h-12 w-30  
-          rounded-3xl  hover:bg-blog-dark-teal transition-all 
-          ease-in-out duration-300"
-            onClick={handleLogin}
-          >
-            <FaGoogle className="h-5 w-5" />
-            Log in with Google
-          </button>
-          <div className="flex gap-1">
-            <p className="text-blog-grey ">No account? </p>
-            <a href="/login" className="text-blog-teal hover:underline">
+          <div className="mt-4 text-center text-sm text-foreground">
+            No account?{" "}
+            <a href="/" className="text-accent hover:underline">
               Create one
             </a>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
