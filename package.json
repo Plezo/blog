@@ -12,6 +12,7 @@
     "@aws-sdk/client-s3": "^3.592.0",
     "@aws-sdk/client-sts": "^3.592.0",
     "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "axios": "^1.7.2",

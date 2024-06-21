@@ -1,6 +1,6 @@
 "use client";
-import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -38,7 +39,7 @@ export default function Home() {
               <Input
                 id="email"
                 type="email"
-                className="bg-primary"
+                className="bg-primary text-foreground"
                 placeholder="m@example.com"
                 required
               />
@@ -56,7 +57,7 @@ export default function Home() {
                 </a>
               </div>
               <Input
-                className="bg-primary"
+                className="bg-primary text-foreground"
                 id="password"
                 type="password"
                 required
@@ -70,6 +71,9 @@ export default function Home() {
               <MdOutlineEmail className="h-5 w-5 mr-2" />
               Login
             </Button>
+            <div className="flex justify-center ">
+              <Separator className="my-0 w-4/5 bg-foreground" />
+            </div>
             <Button
               variant="outline"
               className="w-full text-foreground bg-accent border-background hover:bg-accent/80"
@@ -77,6 +81,14 @@ export default function Home() {
             >
               <FaGoogle className="h-5 w-5 mr-2" />
               Login with Google
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full text-foreground bg-accent border-background hover:bg-accent/80"
+              onClick={handleLogin}
+            >
+              <FaGithub className="h-5 w-5 mr-2" />
+              Login with Github
             </Button>
           </div>
           <div className="mt-4 text-center text-sm text-foreground">
