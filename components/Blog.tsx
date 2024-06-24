@@ -25,12 +25,18 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
           </CardHeader>
           <CardContent className="text-foreground">
             <div className="flex flex-row gap-0">
-              <div className="w-96 h-32">
+              <div className="w-80 h-32">
                 <p>{blog.overview}</p>
               </div>
               <div className="flex justify-end w-32 h-32">
                 {blog.img && (
-                  <Image src={blog.img} width={100} height={150} alt="" />
+                  <Image
+                    src={blog.img}
+                    width={100}
+                    height={150}
+                    alt=""
+                    className="object-cover"
+                  />
                 )}
               </div>
             </div>

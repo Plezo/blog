@@ -21,6 +21,9 @@ const config = {
     extend: {
       spacing: {
         "128": "32rem",
+        "144": "36rem",
+        "160": "40rem",
+        "192": "48rem",
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],

@@ -34,6 +34,9 @@
 
     --radius: 0.5rem;
   }
+  .markdown > * {
+    all: revert;
+  }
 
   .dark {
     --background: 222.2 84% 4.9%;
