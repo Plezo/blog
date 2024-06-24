@@ -29,7 +29,7 @@ export default function BlogsPage() {
           <div className="w-full flex flex-col">
             <SingleBlog key={blog.id} blog={blog} />
             <div className="w-full flex justify-center">
-              <Separator className="my-4 w-96 " />
+              <Separator className="my-4 w-96  opacity-25" />
             </div>
           </div>
         ))}
