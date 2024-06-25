@@ -40,7 +40,7 @@ export default function Header({
   };
 
   return (
-    <header className="flex items-center justify-between h-14 sticky top-0 z-10 bg-[#253237]">
+    <header className="flex items-center justify-between h-14 sticky top-0 z-10 bg-[#253237] p-16">
       <h1 className="text-3xl font-bold text-yellow-500">Blog Editor</h1>
       <section className="flex items-center mx-auto ml-16 space-x-5">
         {btns.map((btn) => (

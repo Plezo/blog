@@ -98,10 +98,17 @@ export default function Home() {
     } catch (error) {
       if (error) return console.error(error);
     }
+
+    setContent("");
+    setTitle("");
+    setOverview("");
+    setImg(null);
+    setErrors({});
+    setIsFormValid(false);
   };
 
   return (
-    <div>
+    <div className="p-12">
       <div className="flex gap-8">
         <div className="flex flex-col gap-4 w-32 text-black">
           <input
@@ -114,15 +121,17 @@ export default function Home() {
             onChange={(e) => setOverview(e.target.value)}
           />
           {errors.overview && <p className="text-red-700">{errors.overview}</p>}
+        </div>
+        <div className="flex flex-col gap-4 w-64">
           <input type="file" accept="image/*" onChange={handleFileUpload} />
           {errors.file && <p className="text-red-700">{errors.file}</p>}
+          <button
+            className="text-yellow-300 text-2xl bg-black p-2 mb-4 rounded-lg hover:bg-gray-900 active:bg-gray-800"
+            onClick={handlePublish}
+          >
+            Publish
+          </button>
         </div>
-        <button
-          className="text-yellow-300 text-4xl bg-black p-4 rounded-full hover:bg-gray-900 active:bg-gray-800"
-          onClick={handlePublish}
-        >
-          Publish
-        </button>
         {isFormValid && (
           <h1 className="text-4xl text-green-600 p-4">Published!</h1>
         )}
@@ -149,7 +158,7 @@ export default function Home() {
 
           <article className="w-full pt-5 pl-6">
             <Markdown
-              className="prose prose-invert min-w-full prose-p:text-xl"
+              className="prose prose-invert min-w-full prose-p:text-xl markdown"
               components={options}
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[

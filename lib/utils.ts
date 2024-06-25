@@ -6,6 +6,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function formatDate(date: Date) {
+  const today = new Date();
+  const year = date.getFullYear();
+  const monthFormatter = new Intl.DateTimeFormat("en", { month: "short" });
+  const day = date.getDate();
+  const month = monthFormatter.format(date);
+
+  const formattedDate =
+    year < today.getFullYear() ? `${month} ${day} ${year}` : `${month} ${day}`;
+
+  return formattedDate;
+}
+
 export async function verifyJWT(token: string, secret: string): Promise<any> {
   const encoder = new TextEncoder();
   const key = encoder.encode(secret);
