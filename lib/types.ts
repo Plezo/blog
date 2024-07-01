@@ -22,3 +22,5 @@ export interface Blog {
 
 export type NewBlog = Omit<Blog, "createdat" | "lastedited">;
 export type UpdateBlog = Partial<Blog>;
+
+export type BlogPreview = Blog & { username?: string; userimg?: string };

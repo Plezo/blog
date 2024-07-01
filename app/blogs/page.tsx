@@ -1,17 +1,18 @@
 "use client";
-import { Blog } from "@/lib/types";
+import { BlogPreview } from "@/lib/types";
 import SingleBlog from "@/components/SingleBlog";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
 export default function BlogsPage() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogs, setBlogs] = useState<BlogPreview[]>([]);
   useEffect(() => {
     const fetchContent = async () => {
       try {
         const { data } = await axios.get(`/api/blog`);
         setBlogs(data);
+        console.log(data);
       } catch (error) {
         console.error("Failed to fetch profile", error);
       }

@@ -22,7 +22,8 @@ export async function saveBlog(blog: NewBlog) {
 
 export const getAllBlogs = async () => {
   const q = `
-  SELECT * FROM blogs
+  SELECT blogs.*, users.username, users.img AS userimg FROM blogs 
+  INNER JOIN users ON blogs.userid = users.id
   `;
 
   const res = await query(q);

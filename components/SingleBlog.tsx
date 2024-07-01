@@ -1,21 +1,21 @@
 // Render the list of blogs
-import { Blog } from "@/lib/types";
+import { BlogPreview } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 
-export default function SingleBlog({ blog }: { blog: Blog }) {
+export default function SingleBlog({ blog }: { blog: BlogPreview }) {
   return (
     <a href={`/blogs/${blog.id}`}>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <Image
-            src={blog.img!}
+            src={blog.userimg!}
             width={25}
             height={25}
             alt=""
             className="aspect-[1/1] rounded-full"
           />
-          <p className="text-xs opacity-90">{blog.userid}</p>
+          <p className="text-xs opacity-90">{blog.username}</p>
         </div>
         <div className="flex justify-between">
           <div className="flex flex-col justify-between gap-2 w-3/5">
