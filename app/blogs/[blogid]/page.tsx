@@ -2,6 +2,7 @@
 
 import { CodeBlock, Pre } from "@/components/Code";
 import { Blog } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -40,7 +41,11 @@ export default function BlogPage({ params }: { params: { blogid: string } }) {
         </h1>
         <p>{metadata?.overview}</p>
         <p className="text-foreground">Author info here</p>
-        <p>{metadata?.createdat}</p>
+        <p>
+          {metadata?.createdat
+            ? formatDate(new Date(metadata.createdat))
+            : "No date available"}
+        </p>
         <div className="flex justify-center h-96 my-4 overflow-hidden relative w-full">
           {metadata?.img && (
             <Image
