@@ -119,7 +119,7 @@ export default function Home() {
           {errors.title && <p className="text-red-700">{errors.title}</p>}
           <textarea
             placeholder="Overview"
-            value={title}
+            value={overview}
             onChange={(e) => setOverview(e.target.value)}
           />
           {errors.overview && <p className="text-red-700">{errors.overview}</p>}

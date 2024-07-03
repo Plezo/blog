@@ -5,6 +5,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { getAllBlogs } from "@/data/blogs";
+import { Main } from "next/document";
+import MainHeader from "@/components/MainHeader";
 
 export default async function BlogsPage() {
   // const [blogs, setBlogs] = useState<BlogPreview[]>([]);
@@ -26,6 +28,7 @@ export default async function BlogsPage() {
 
   return (
     <main className="flex flex-col">
+      <MainHeader />
       <div className="flex justify-center my-16">
         <h1 className="text-3xl font-semibold">Blogs</h1>
       </div>
