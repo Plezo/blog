@@ -1,5 +1,11 @@
+import remarkGfm from "remark-gfm";
+import rehypeExternalLinks from "rehype-external-links";
+import rehypeSanitize from "rehype-sanitize";
+import createMDX from "@next/mdx";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
   images: {
     remotePatterns: [
       {
@@ -19,4 +25,14 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [
+      rehypeSanitize,
+      [rehypeExternalLinks, { content: { type: "text", value: "🔗" } }],
+    ],
+  },
+});
+
+export default withMDX(nextConfig);

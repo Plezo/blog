@@ -1,43 +1,24 @@
-"use client";
-
-import { Blog, User } from "@/lib/types";
-import axios from "axios";
+import { getBlogsByUser } from "@/data/blogs";
+import { getUserByUsername } from "@/data/users";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-export default function ProfilePage({
+export default async function ProfilePage({
   params,
 }: {
   params: { username: string };
 }) {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [profile, setProfile] = useState<User | null>(null);
+  const profile = await getUserByUsername(params.username);
+  const blogs = await getBlogsByUser(profile.id);
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data } = await axios.get(
-          `/api/user?username=${params.username}&getblogs=true`
-        );
-
-        setProfile(data.profile);
-        setBlogs(data.blogs);
-      } catch (error) {
-        console.error("Failed to fetch profile", error);
-      }
-    };
-
-    fetchContent();
-  }, []);
+  console.log(profile);
 
   return (
     <div className="flex flex-row justify-between">
-      {/* List of blogs */}
       <div className="flex flex-col gap-4">
         <div>{profile?.username}</div>
         <div className="flex flex-col gap-8 bg-slate-800 p-4">
           {blogs.map((blog) => (
-            <div className="flex flex-row gap-12">
+            <div key={blog.id} className="flex flex-row gap-12">
               <div className="flex flex-col">
                 <h1 className="text-2xl font-extrabold">{blog.title}</h1>
                 <p>{blog.overview}</p>

@@ -1,80 +1,57 @@
-"use client";
-
-import { CodeBlock, Pre } from "@/components/Code";
-import { Blog } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import Markdown from "react-markdown";
-import rehypeExternalLinks from "rehype-external-links";
-import rehypeSanitize from "rehype-sanitize";
-import remarkGfm from "remark-gfm";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import { getBlogByID } from "@/data/blogs";
+import { fetchObject } from "@/lib/aws/s3";
 
-export default function BlogPage({ params }: { params: { blogid: string } }) {
-  const options = { code: CodeBlock, pre: Pre };
-  const [metadata, setMetadata] = useState<Blog | null>(null);
-  const [content, setContent] = useState(" ");
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data: blog } = await axios.get(
-          `/api/blog?blogid=${params.blogid}`
-        );
-
-        setMetadata(blog.metadata as Blog);
-        setContent(blog.content as string);
-      } catch (error) {
-        console.error("Failed to fetch blog", error);
-      }
-    };
-
-    fetchContent();
-  }, []);
+export default async function BlogPage({
+  params,
+}: {
+  params: { blogid: string };
+}) {
+  const blog = await getBlogByID(params.blogid);
+  const blogcontent = await fetchObject(`blogs/${params.blogid!}.mdx`);
 
   return (
-    <div className="flex flex-col mx-4">
-      <div className="flex flex-col m-auto pt-4 gap-4">
-        <h1 className="text-4xl font-bold text-foreground">
-          {metadata?.title}
-        </h1>
-        <p>{metadata?.overview}</p>
-        <p className="text-foreground">Author info here</p>
-        <p>
-          {metadata?.createdat
-            ? formatDate(new Date(metadata.createdat))
-            : "No date available"}
-        </p>
-        <div className="flex justify-center h-96 my-4 overflow-hidden relative w-full">
-          {metadata?.img && (
+    <div className="flex justify-center">
+      <div className="flex flex-col mx-4 my-16 w-144">
+        <div className="flex flex-col m-auto gap-4">
+          <h1 className="text-5xl font-bold text-foreground">{blog.title}</h1>
+          <p className="text-xl text-gray-400">{blog.overview}</p>
+          <div className="flex gap-4 w-16">
             <Image
-              src={metadata.img}
-              layout="fill"
-              objectFit="cover"
+              className="rounded-full h-full w-full"
+              src={blog.userimg!}
+              width={35}
+              height={35}
               alt=""
-              className="object-cover"
             />
-          )}
+            <div className="flex flex-col m-auto">
+              <span className="text-sm">{blog.username}</span>
+              <p className="text-sm text-gray-300">
+                {formatDate(new Date(blog.createdat))}
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-center w-full overflow-hidden">
+            {blog.img && (
+              <Image
+                className="w-full h-[500px] object-cover"
+                src={blog.img}
+                // fill={true}
+                width={500}
+                height={500}
+                objectFit="contain"
+                alt=""
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <div className="flex justify-start">
-        <div className="flex justify-center py-4 text-left w-144 m-auto">
-          <Markdown
-            className="prose prose-invert prose-p:text-xl text-foreground markdown"
-            components={options}
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[
-              rehypeSanitize,
-              [rehypeExternalLinks, { content: { type: "text", value: "🔗" } }],
-            ]}
-          >
-            {content}
-          </Markdown>
-        </div>
-      </div>
-      <div className="flex justify-start">
-        <h1 className="text-3xl font-bold text-foreground">Written by</h1>
+        <main className="flex justify-center py-4 text-left m-auto">
+          <article className="prose prose-invert prose-p:text-xl text-foreground markdown">
+            <MDXRemote source={blogcontent.Body as string} />
+          </article>
+        </main>
       </div>
     </div>
   );

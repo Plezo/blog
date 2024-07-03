@@ -33,12 +33,20 @@ export const getUserByEmail = async (email: string) => {
   return res.rows[0];
 };
 
-export const getUserByUsername = async (username: string) => {
+export const getUserByUsername = async (username: string): Promise<User> => {
   const q = `
   SELECT * FROM users WHERE username = $1
   `;
 
   const values = [username];
   const res = await query(q, values);
-  return res.rows[0];
+
+  const user = res.rows[0];
+
+  const formattedUser: User = {
+    ...user,
+    createdat: user.createdat.toISOString(),
+  };
+
+  return formattedUser;
 };

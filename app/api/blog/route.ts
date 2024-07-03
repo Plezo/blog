@@ -1,7 +1,6 @@
 import { getAllBlogs, getBlogByID, saveBlog } from "@/data/blogs";
 import { fetchObject, uploadToS3 } from "@/lib/aws/s3";
 import { NewBlog } from "@/lib/types";
-import { get } from "http";
 import { NextRequest, NextResponse } from "next/server";
 
 const storeMetadata = async (newblog: NewBlog) => {
@@ -28,7 +27,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   if (blogid) {
     const blog = await getBlogByID(blogid!);
-    const blogcontent = await fetchObject(`blogs/${blogid!}.md`);
+    const blogcontent = await fetchObject(`blogs/${blogid!}.mdx`);
 
     return NextResponse.json({
       metadata: blog,
@@ -52,7 +51,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   try {
     const blogid = crypto.randomUUID();
-    const blogfilename = `blogs/${blogid}.md`;
+    const blogfilename = `blogs/${blogid}.mdx`;
 
     const blogfile = new File([data.get("content")!], blogfilename, {
       type: "text/markdown",

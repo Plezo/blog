@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   try {
     const blogid = crypto.randomUUID();
-    const blogfilename = `blogs/${blogid}.md`;
+    const blogfilename = `blogs/${blogid}.mdx`;
 
     const blogfile = new File([data.get("content")!], blogfilename, {
       type: "text/markdown",
