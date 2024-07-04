@@ -14,6 +14,9 @@ import WordCount from "./WordCount";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Image from "next/image";
 import { toast } from "@/components/ui/use-toast";
+import dynamic from "next/dynamic";
+
+const PreviewMDX = dynamic(() => import("./PreviewMDX"), { ssr: false });
 
 type FormError = {
   title?: string;
@@ -162,12 +165,17 @@ export default function Editor() {
           <h1 className="text-4xl text-green-600 p-4">Published!</h1>
         )}
       </div> */}
-      <div className="w-full bg-black h-72 p-8">
-        <input type="file" accept="image/*" onChange={handleFileUpload} />
-        <div className="flex">
+      <div className="flex flex-col w-full bg-black h-72 p-8 gap-4">
+        <input
+          className="text-black w-32"
+          type="file"
+          accept="image/*"
+          onChange={handleFileUpload}
+        />
+        <div className="flex gap-4">
           {imgs.map((img) => (
             <Image
-              className="hover:opacity-90 active:opacity-75"
+              className="hover:opacity-90 active:opacity-75 aspect-[1/1]"
               src={img.uri!}
               width={150}
               height={150}
@@ -203,22 +211,7 @@ export default function Editor() {
           </section>
 
           <article className="bg-gray-600 w-full p-8 prose prose-invert prose-p:text-xl text-foreground markdown">
-            <h1>Preview Goes Here</h1>
-            {/* <MDXRemote source={content} /> */}
-            {/* <Markdown
-              className="prose prose-invert min-w-full prose-p:text-xl markdown"
-              components={options}
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[
-                rehypeSanitize,
-                [
-                  rehypeExternalLinks,
-                  { content: { type: "text", value: "🔗" } },
-                ],
-              ]}
-            >
-              {content}
-            </Markdown> */}
+            <PreviewMDX source={content} />
           </article>
         </main>
       </div>

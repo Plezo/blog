@@ -17,5 +17,5 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ["/"], // Paths to protect
+  matcher: ["/editor"], // Paths to protect
 };
