@@ -8,17 +8,18 @@ export default async function Metadata({
   metadata: BlogPreview;
 }) {
   return (
-    <div className="flex flex-col m-auto gap-4">
+    <div className="flex flex-col m-auto gap-4 w-full">
       <h1 className="text-5xl font-bold text-foreground">{metadata.title}</h1>
       <p className="text-xl text-gray-400">{metadata.overview}</p>
-      <div className="flex gap-4 w-16">
-        <Image
-          className="rounded-full h-full w-full"
-          src={metadata.userimg!}
-          width={35}
-          height={35}
-          alt=""
-        />
+      <div className="flex w-32">
+        <div className="h-12 w-12 relative">
+          <Image
+            className="rounded-full"
+            src={metadata.userimg!}
+            layout="fill"
+            alt=""
+          />
+        </div>
         <div className="flex flex-col m-auto">
           <span className="text-sm">{metadata.username}</span>
           <p className="text-sm text-gray-300">
@@ -28,15 +29,9 @@ export default async function Metadata({
       </div>
       <div className="flex justify-center w-full overflow-hidden">
         {metadata.img && (
-          <Image
-            className="w-full h-[500px] object-cover"
-            src={metadata.img}
-            // fill={true}
-            width={500}
-            height={500}
-            objectFit="contain"
-            alt=""
-          />
+          <div className="h-144 w-full relative">
+            <Image src={metadata.img} layout="fill" objectFit="cover" alt="" />
+          </div>
         )}
       </div>
     </div>
